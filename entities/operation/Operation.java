@@ -12,7 +12,7 @@ public abstract class Operation {
     protected OperationStatus status;
     protected final OperationProperties operationProperties;
 
-    public Operation(int id, String time, int amount, Client sender, Client receiver, OperationStatus status) {
+    protected Operation(int id, String time, int amount, Client sender, Client receiver, OperationStatus status) {
         this.id = id;
         this.time = time;
         this.amount = amount;

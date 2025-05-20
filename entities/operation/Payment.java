@@ -18,21 +18,25 @@ public class Payment extends Operation {
     public void performOperation() throws OperationAlreadyDoneException,
             BlockedReceiverException,
             NotEnoughMoneyException {
-        if(super.status != OperationStatus.IN_PROCESS) {
+        if (super.status != OperationStatus.IN_PROCESS) {
             throw new OperationAlreadyDoneException(super.status);
         }
 
         Wallet receiverWallet = super.operationProperties.getReceiver().getWallet();
 
-        if(!receiverWallet.isActive()) {
+        if (!receiverWallet.isActive()) {
+            super.status = OperationStatus.CANCELLED;
             throw new BlockedReceiverException();
         }
 
-        if (super.amount + possibleCredit > super.operationProperties.getSender().getWallet().getBalance() + possibleCredit) {
+        if (!super.operationProperties.getSender().getWallet().isActive() ||
+                super.amount + possibleCredit > super.operationProperties.getSender().getWallet().getBalance()) {
+            super.status = OperationStatus.CANCELLED;
             throw new NotEnoughMoneyException();
         }
 
         receiverWallet.addBalance(super.amount);
         super.operationProperties.getSender().getWallet().subtractBalance(super.amount);
+        super.status = OperationStatus.SUCCESSFUL;
     }
 }

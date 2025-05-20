@@ -22,14 +22,18 @@ public class Transaction extends Operation {
         Wallet receiverWallet = super.operationProperties.getReceiver().getWallet();
 
         if(!receiverWallet.isActive()) {
+            super.status = OperationStatus.CANCELLED;
             throw new BlockedReceiverException();
         }
 
-        if (super.amount > super.operationProperties.getSender().getWallet().getBalance()) {
+        if (!super.operationProperties.getSender().getWallet().isActive() ||
+                super.amount > super.operationProperties.getSender().getWallet().getBalance()) {
+            super.status = OperationStatus.CANCELLED;
             throw new NotEnoughMoneyException();
         }
 
         receiverWallet.addBalance(super.amount);
         super.operationProperties.getSender().getWallet().subtractBalance(super.amount);
+        super.status = OperationStatus.SUCCESSFUL;
     }
 }
