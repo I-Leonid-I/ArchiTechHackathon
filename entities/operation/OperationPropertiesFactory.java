@@ -9,8 +9,8 @@ public class OperationPropertiesFactory {
 
     public static OperationProperties getOperationProperties(Client sender, Client receiver) {
         for(OperationProperties operationProperties : operationPropertiesList) {
-            if (operationProperties.getSender() == sender &&
-                operationProperties.getReceiver() == receiver) {
+            if (operationProperties.getSender().equals(sender) &&
+                operationProperties.getReceiver().equals(receiver)) {
                 return operationProperties;
             }
         }
