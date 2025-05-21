@@ -1,0 +1,2 @@
+# Ignore db.properties in the database folder
+/database/db.properties
