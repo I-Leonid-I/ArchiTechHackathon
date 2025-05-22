@@ -1,5 +1,5 @@
 -- 1. Справочник банков (классификатор)
-CREATE TABLE bank_reference (
+CREATE TABLE IF NOT EXISTS bank_reference (
     bank_id SERIAL PRIMARY KEY,
     bank_name VARCHAR(255) UNIQUE NOT NULL
 );
@@ -19,7 +19,7 @@ INSERT INTO bank_reference (bank_name) VALUES
 
 
 -- 3. Основная таблица с внешним ключом на справочник
-CREATE TABLE banks (
+CREATE TABLE IF NOT EXISTS banks (
     bank_id INT PRIMARY KEY REFERENCES bank_reference(bank_id),
     bik CHAR(9) UNIQUE NOT NULL,
     inn CHAR(12),
