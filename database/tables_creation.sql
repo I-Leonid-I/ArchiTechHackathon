@@ -1,7 +1,36 @@
+-- 1. Справочник банков (классификатор)
+CREATE TABLE bank_reference (
+    bank_id SERIAL PRIMARY KEY,
+    bank_name VARCHAR(255) UNIQUE NOT NULL
+);
+
+-- 2. Заполнение справочника названиями банков
+INSERT INTO bank_reference (bank_name) VALUES
+    ('Сбербанк'),
+    ('ВТБ'),
+    ('Альфа-Банк'),
+    ('Газпромбанк'),
+    ('Тинькофф'),
+    ('Россельхозбанк'),
+    ('Райффайзенбанк'),
+    ('Промсвязьбанк'),
+    ('Совкомбанк'),
+    ('ЮниКредит Банк');
+
+
+-- 3. Основная таблица с внешним ключом на справочник
+CREATE TABLE banks (
+    bank_id INT PRIMARY KEY REFERENCES bank_reference(bank_id),
+    bik CHAR(9) UNIQUE NOT NULL,
+    inn CHAR(12),
+    license_date DATE
+);
+
+
 CREATE TABLE IF NOT EXISTS clients (
                                        client_id SERIAL PRIMARY KEY,
                                        name VARCHAR(255) NOT NULL,
-    bank_id INT NOT NULL
+    FOREIGN KEY (bank_id) REFERENCES banks(bank_id)
     );
 
 
